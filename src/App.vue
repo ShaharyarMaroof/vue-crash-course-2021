@@ -1,64 +1,34 @@
 <template>
   <div class="container">
-    <Header title="Task Tracker" />
-    <AddTaskForm @add-task="addTask" />
-    <Tasks
-      @toggle-reminder="toggleReminder"
-      @delete-task="deleteTask"
-      :tasks="tasks"
+    <Header
+      @toggle-add-task="toggleAddTask"
+      title="Task Tracker"
+      :showAddTask="showAddTask"
     />
+    <router-view :showAddTask="showAddTask" />
+    <Footer />
   </div>
 </template>
 
 <script lang="ts">
 import Header from "./components/Header.vue";
-import Tasks from "./components/Tasks.vue";
-import AddTaskForm from "./components/AddTask.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    Tasks,
-    AddTaskForm,
+    Footer,
   },
   data() {
     return {
-      tasks: [],
+      showAddTask: false,
     };
   },
-  created() {
-    //@ts-ignore
-    this.tasks = [
-      {
-        id: 1,
-        text: "test task",
-        reminder: true,
-        day: "June 14, 2021 at 03:30pm",
-      },
-    ];
-  },
   methods: {
-    addTask(task: any) {
+    toggleAddTask() {
       //@ts-ignore
-      this.tasks = [...this.tasks, task];
-    },
-    deleteTask(id: number) {
-      if (confirm("Are you sure?")) {
-        //@ts-ignore
-        this.tasks = this.tasks.filter((task: any) => task.id !== id);
-        console.log(`task deleted ${id}`);
-      }
-    },
-    toggleReminder(id: number) {
-      //@ts-ignore
-      this.tasks = this.tasks.map((task: any) => {
-        if (task.id === id) {
-          task.reminder = !task.reminder;
-        }
-        return task;
-      });
-      console.log(`task reminder toggled ${id}`);
+      this.showAddTask = !this.showAddTask;
     },
   },
 };
